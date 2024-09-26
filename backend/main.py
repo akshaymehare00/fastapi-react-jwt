@@ -8,13 +8,14 @@ from database import engine, get_db
 from fastapi.security import OAuth2PasswordRequestForm
 from models import User
 from auth import create_access_token, verify_password, get_password_hash, get_current_user
-
+from datetime import timedelta
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 # API Endpoints
-@app.post("/token", response_model=schemas.Token)
+@app.post("/token", response_model=schemas.TokenResponse)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):

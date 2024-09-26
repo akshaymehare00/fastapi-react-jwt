@@ -13,16 +13,20 @@ class User(BaseModel):
 class UserInDB(UserCreate):
     hashed_password: str
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    username: str
     
 class UserResponse(BaseModel):
     username: str
 
     class Config:
         from_attributes = True 
+        
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    class Config:
+        from_attributes = True 
+
+class TokenData(BaseModel):
+    username: str
 
