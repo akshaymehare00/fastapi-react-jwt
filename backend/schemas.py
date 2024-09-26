@@ -24,6 +24,7 @@ class UserResponse(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
+    user_id : int
     class Config:
         from_attributes = True 
 

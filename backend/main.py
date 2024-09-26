@@ -17,16 +17,19 @@ app = FastAPI()
 # API Endpoints
 @app.post("/token", response_model=schemas.TokenResponse)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == form_data.username).first()
+    user = db.query(models.User).filter(models.User.username == form_data.username).first()  # Ensure User model is used
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
-    return {"access_token": access_token, "token_type": "bearer"}
+    access_token = create_access_token(data={"sub": user.username, "user_id": user.id}, expires_delta=access_token_expires) 
+    print("🐍 File: backend/main.py | Line: 30 | undefined ~ access_token",user.id)
+
+    return {"access_token": access_token, "token_type": "bearer", "user_id": user.id}
 
 @app.post("/users/", response_model=schemas.UserResponse)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
