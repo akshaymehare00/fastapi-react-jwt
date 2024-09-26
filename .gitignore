@@ -1,0 +1,23 @@
+# Python-specific files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.env
+
+# SQLite database file (if you are using SQLite)
+*.db
+*.sqlite3
+
+# FastAPI specific
+*.log
+# Node.js-specific files
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables
+.env
